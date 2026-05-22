@@ -1,0 +1,1088 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Niharika Labhsetwar — ESG Analyst</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+/* ── RESET & BASE ─────────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; font-size: 16px; }
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: #0d1117;
+  color: #e6edf3;
+  line-height: 1.7;
+  overflow-x: hidden;
+}
+a { text-decoration: none; color: inherit; }
+img { display: block; max-width: 100%; }
+
+/* ── VARIABLES ────────────────────────────────────────────────────────────── */
+:root {
+  --green: #3fb884;
+  --green-bg: rgba(63,184,132,0.1);
+  --green-border: rgba(63,184,132,0.3);
+  --amber: #f0a500;
+  --red: #e05a5a;
+  --text: #e6edf3;
+  --muted: #7d8590;
+  --card-bg: #161b22;
+  --border: rgba(255,255,255,0.08);
+  --radius: 12px;
+}
+
+/* ── NAV ──────────────────────────────────────────────────────────────────── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 999;
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 0 48px; height: 60px;
+  background: rgba(13,17,23,0.95);
+  border-bottom: 1px solid var(--border);
+  backdrop-filter: blur(12px);
+}
+.nav-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 18px; color: var(--green); letter-spacing: -0.01em;
+}
+.nav-links { display: flex; gap: 28px; }
+.nav-links a {
+  font-size: 13px; color: var(--muted);
+  transition: color 0.2s;
+}
+.nav-links a:hover { color: var(--green); }
+.nav-hire {
+  background: var(--green); color: #000;
+  font-size: 13px; font-weight: 600;
+  padding: 8px 20px; border-radius: 40px;
+  transition: opacity 0.2s;
+}
+.nav-hire:hover { opacity: 0.85; }
+
+/* ── HERO ─────────────────────────────────────────────────────────────────── */
+.hero {
+  min-height: 100vh;
+  display: flex; align-items: center;
+  padding: 100px 48px 60px;
+  position: relative; overflow: hidden;
+}
+/* subtle dot grid */
+.hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image: radial-gradient(rgba(63,184,132,0.15) 1px, transparent 1px);
+  background-size: 32px 32px;
+  pointer-events: none;
+}
+/* green glow top-right */
+.hero::after {
+  content: '';
+  position: absolute;
+  width: 500px; height: 500px;
+  background: radial-gradient(circle, rgba(63,184,132,0.08), transparent 70%);
+  top: -80px; right: -80px;
+  pointer-events: none;
+}
+.hero-inner { position: relative; max-width: 760px; }
+.hero-tag {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: 'DM Mono', monospace;
+  font-size: 11px; color: var(--green);
+  letter-spacing: 0.15em; text-transform: uppercase;
+  margin-bottom: 24px;
+}
+.hero-tag::before { content: ''; width: 28px; height: 1px; background: var(--green); }
+h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(42px, 7vw, 76px);
+  line-height: 1.06; font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-bottom: 24px;
+}
+h1 em { font-style: italic; color: var(--green); }
+.hero-sub {
+  font-size: 17px; color: var(--muted);
+  max-width: 520px; font-weight: 300;
+  line-height: 1.8; margin-bottom: 36px;
+}
+.hero-btns { display: flex; gap: 12px; flex-wrap: wrap; }
+.btn-solid {
+  background: var(--green); color: #000;
+  font-weight: 600; font-size: 14px;
+  padding: 13px 28px; border-radius: 40px;
+  transition: transform 0.2s, box-shadow 0.2s;
+  display: inline-block;
+}
+.btn-solid:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(63,184,132,0.3); }
+.btn-ghost {
+  border: 1px solid var(--border); color: var(--text);
+  font-size: 14px; padding: 13px 28px; border-radius: 40px;
+  transition: border-color 0.2s, color 0.2s;
+  display: inline-block;
+}
+.btn-ghost:hover { border-color: var(--green); color: var(--green); }
+.hero-stats {
+  display: flex; gap: 40px; flex-wrap: wrap;
+  margin-top: 52px; padding-top: 40px;
+  border-top: 1px solid var(--border);
+}
+.stat-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 32px; font-weight: 700; color: var(--green);
+}
+.stat-lbl { font-size: 12px; color: var(--muted); margin-top: 2px; }
+
+/* ── TICKER ───────────────────────────────────────────────────────────────── */
+.ticker {
+  background: var(--green);
+  padding: 10px 0; overflow: hidden;
+  white-space: nowrap;
+}
+.ticker-track {
+  display: inline-flex;
+  animation: scroll-ticker 28s linear infinite;
+}
+.ticker-item {
+  font-size: 11px; font-weight: 600;
+  color: #000; letter-spacing: 0.07em;
+  text-transform: uppercase;
+  padding: 0 28px;
+}
+.ticker-item::after { content: '·'; margin-left: 28px; }
+@keyframes scroll-ticker {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* ── SECTION SHELL ────────────────────────────────────────────────────────── */
+.section { max-width: 1100px; margin: 0 auto; padding: 88px 48px; }
+.section-divider { height: 1px; background: var(--border); }
+.section-eyebrow {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px; color: var(--green);
+  letter-spacing: 0.18em; text-transform: uppercase;
+  margin-bottom: 12px;
+}
+h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(28px, 4vw, 44px);
+  font-weight: 700; line-height: 1.12;
+  letter-spacing: -0.02em; margin-bottom: 48px;
+}
+
+/* ── SKILLS ───────────────────────────────────────────────────────────────── */
+.skills-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: start; }
+/* Skill bars */
+.skill-bar { margin-bottom: 16px; }
+.skill-bar-head { display: flex; justify-content: space-between; margin-bottom: 6px; font-size: 13px; }
+.skill-bar-name { color: var(--text); font-weight: 400; }
+.skill-bar-pct { font-family: 'DM Mono', monospace; color: var(--green); font-size: 12px; }
+.skill-bar-track {
+  height: 3px; background: rgba(255,255,255,0.1);
+  border-radius: 2px; overflow: hidden;
+}
+.skill-bar-fill {
+  height: 100%; background: var(--green);
+  border-radius: 2px; width: 0;
+  transition: width 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+}
+/* Skill tag clouds */
+.skill-tags-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 28px; }
+.skill-group {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 14px;
+}
+.skill-group-title {
+  font-size: 10px; font-weight: 600; color: var(--green);
+  text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px;
+}
+.tags { display: flex; flex-wrap: wrap; gap: 5px; }
+.tag {
+  font-size: 11px; padding: 3px 9px; border-radius: 20px;
+  background: rgba(63,184,132,0.08);
+  color: var(--green);
+  border: 1px solid rgba(63,184,132,0.2);
+}
+
+/* ── WORK CARDS ───────────────────────────────────────────────────────────── */
+.work-grid { display: grid; gap: 20px; }
+.work-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s;
+}
+.work-card:hover {
+  border-color: var(--green-border);
+  transform: translateY(-3px);
+  box-shadow: 0 16px 48px rgba(0,0,0,0.5);
+}
+.wc-top {
+  padding: 22px 24px 0;
+  display: flex; justify-content: space-between; align-items: flex-start;
+}
+.wc-badge {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px; color: var(--green);
+  letter-spacing: 0.1em; text-transform: uppercase;
+  background: var(--green-bg);
+  border: 1px solid var(--green-border);
+  padding: 4px 10px; border-radius: 20px;
+}
+.wc-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 20px; font-weight: 700;
+  margin: 12px 24px 4px; line-height: 1.25;
+}
+.wc-meta {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px; color: var(--muted);
+  margin: 0 24px 16px;
+}
+.wc-chart {
+  padding: 14px 24px;
+  background: rgba(0,0,0,0.3);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+.wc-body { padding: 16px 24px 22px; }
+.finding {
+  padding: 10px 14px;
+  background: rgba(63,184,132,0.05);
+  border-left: 3px solid var(--green);
+  border-radius: 0 6px 6px 0;
+  margin-bottom: 8px; font-size: 13px; line-height: 1.6;
+}
+.finding strong { color: var(--green); font-weight: 500; }
+.rag-row { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 14px; }
+.rag {
+  padding: 4px 11px; border-radius: 20px;
+  font-size: 11px; font-weight: 600;
+  font-family: 'DM Mono', monospace;
+}
+.rag-g { background: rgba(63,184,132,0.15); color: #3fb884; border: 1px solid rgba(63,184,132,0.3); }
+.rag-a { background: rgba(240,165,0,0.15);  color: #f0a500; border: 1px solid rgba(240,165,0,0.3); }
+.rag-r { background: rgba(224,90,90,0.15);  color: #e05a5a; border: 1px solid rgba(224,90,90,0.3); }
+
+/* ── TIMELINE ─────────────────────────────────────────────────────────────── */
+.timeline { position: relative; padding-left: 24px; }
+.timeline::before {
+  content: '';
+  position: absolute; left: 0; top: 8px; bottom: 8px;
+  width: 1px; background: var(--border);
+}
+.tl-item { position: relative; margin-bottom: 36px; padding-left: 24px; }
+.tl-item:last-child { margin-bottom: 0; }
+.tl-dot {
+  position: absolute; left: -28px; top: 5px;
+  width: 9px; height: 9px; border-radius: 50%;
+  background: var(--green);
+  border: 2px solid #0d1117;
+  box-shadow: 0 0 0 3px rgba(63,184,132,0.2);
+}
+.tl-dot.amber {
+  background: var(--amber);
+  box-shadow: 0 0 0 3px rgba(240,165,0,0.2);
+}
+.tl-date {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px; color: var(--green);
+  letter-spacing: 0.07em; margin-bottom: 3px;
+}
+.tl-date.amber { color: var(--amber); }
+.tl-role { font-size: 15px; font-weight: 500; margin-bottom: 2px; }
+.tl-company { font-size: 13px; color: var(--muted); margin-bottom: 8px; }
+.tl-bullets { display: flex; flex-direction: column; gap: 5px; }
+.tl-bullet {
+  font-size: 13px; color: var(--muted);
+  display: flex; gap: 8px; line-height: 1.55;
+}
+.tl-bullet::before {
+  content: '→'; color: var(--green);
+  font-size: 12px; flex-shrink: 0; margin-top: 3px;
+}
+.edu-extra { margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--border); }
+
+/* ── CONTACT ──────────────────────────────────────────────────────────────── */
+.contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 36px; align-items: start; }
+.contact-big {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(28px, 4.5vw, 50px);
+  font-weight: 700; line-height: 1.1;
+  letter-spacing: -0.02em; margin-bottom: 14px;
+}
+.contact-big em { font-style: italic; color: var(--green); }
+.contact-sub { font-size: 15px; color: var(--muted); margin-bottom: 24px; font-weight: 300; line-height: 1.75; }
+.contact-links { display: flex; flex-direction: column; gap: 10px; }
+.contact-link {
+  display: flex; align-items: center; gap: 14px;
+  padding: 14px 16px;
+  background: var(--card-bg); border: 1px solid var(--border);
+  border-radius: var(--radius);
+  transition: border-color 0.2s, transform 0.2s;
+}
+.contact-link:hover { border-color: var(--green-border); transform: translateX(4px); }
+.contact-link-icon {
+  width: 36px; height: 36px; border-radius: 8px;
+  background: var(--green-bg); border: 1px solid var(--green-border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 15px; font-weight: 700; color: var(--green); flex-shrink: 0;
+}
+.contact-link-label { font-size: 11px; color: var(--muted); display: block; }
+.contact-link-value { font-size: 13px; color: var(--text); font-weight: 500; }
+.contact-link-arrow { margin-left: auto; color: var(--muted); transition: all 0.2s; }
+.contact-link:hover .contact-link-arrow { color: var(--green); transform: translateX(3px); }
+/* Contact form */
+.contact-form {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 24px;
+}
+.form-label {
+  display: block; font-size: 11px; color: var(--muted);
+  font-family: 'DM Mono', monospace; letter-spacing: 0.05em; margin-bottom: 5px;
+}
+.form-input, .form-textarea {
+  width: 100%; display: block;
+  background: #0d1117; border: 1px solid var(--border);
+  border-radius: 8px; padding: 11px 14px;
+  color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 14px;
+  outline: none; transition: border-color 0.2s; margin-bottom: 14px;
+}
+.form-input:focus, .form-textarea:focus { border-color: var(--green); }
+.form-textarea { resize: vertical; min-height: 88px; }
+.form-submit {
+  width: 100%; background: var(--green); color: #000;
+  border: none; border-radius: 8px; padding: 13px;
+  font-size: 15px; font-weight: 600; cursor: pointer;
+  transition: opacity 0.2s; font-family: 'DM Sans', sans-serif;
+}
+.form-submit:hover { opacity: 0.88; }
+.form-success {
+  display: none; margin-top: 10px; padding: 12px;
+  background: rgba(63,184,132,0.08);
+  border: 1px solid var(--green-border);
+  border-radius: 8px; text-align: center;
+  font-size: 13px; color: var(--green);
+}
+
+/* ── FOOTER ───────────────────────────────────────────────────────────────── */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 20px 48px;
+  display: flex; justify-content: space-between; align-items: center;
+  font-size: 12px; color: var(--muted);
+}
+
+/* ── CHATBOT ──────────────────────────────────────────────────────────────── */
+.chat-toggle {
+  position: fixed; bottom: 28px; right: 28px; z-index: 1000;
+  width: 56px; height: 56px; border-radius: 50%;
+  background: var(--green); border: none; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 4px 20px rgba(63,184,132,0.4);
+  transition: transform 0.2s, box-shadow 0.2s;
+  font-size: 22px;
+}
+.chat-toggle:hover { transform: scale(1.08); box-shadow: 0 6px 28px rgba(63,184,132,0.5); }
+.chat-window {
+  position: fixed; bottom: 96px; right: 28px; z-index: 1000;
+  width: 360px; max-height: 520px;
+  background: #161b22;
+  border: 1px solid rgba(63,184,132,0.3);
+  border-radius: 16px;
+  display: none;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+}
+.chat-window.open { display: flex; }
+.chat-header {
+  padding: 14px 16px;
+  background: var(--green);
+  display: flex; align-items: center; gap: 10px;
+}
+.chat-avatar {
+  width: 32px; height: 32px; border-radius: 50%;
+  background: rgba(0,0,0,0.2);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; font-weight: 700; color: #fff;
+  font-family: 'Playfair Display', serif;
+}
+.chat-header-name { font-size: 14px; font-weight: 600; color: #000; }
+.chat-header-sub  { font-size: 11px; color: rgba(0,0,0,0.6); }
+.chat-close {
+  margin-left: auto; background: none; border: none;
+  color: rgba(0,0,0,0.6); font-size: 18px; cursor: pointer; line-height: 1;
+}
+.chat-close:hover { color: #000; }
+.chat-messages {
+  flex: 1; overflow-y: auto; padding: 14px;
+  display: flex; flex-direction: column; gap: 10px;
+  scroll-behavior: smooth;
+}
+.chat-messages::-webkit-scrollbar { width: 3px; }
+.chat-messages::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+.msg { display: flex; gap: 8px; align-items: flex-end; }
+.msg.user { flex-direction: row-reverse; }
+.msg-bubble {
+  max-width: 78%; padding: 10px 14px;
+  border-radius: 16px; font-size: 13px; line-height: 1.55;
+}
+.msg.bot  .msg-bubble { background: #1c2432; color: var(--text); border-radius: 4px 16px 16px 16px; }
+.msg.user .msg-bubble { background: var(--green); color: #000; font-weight: 500; border-radius: 16px 4px 16px 16px; }
+.msg-avatar {
+  width: 26px; height: 26px; border-radius: 50%; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 10px; font-weight: 700;
+}
+.msg.bot  .msg-avatar { background: var(--green); color: #000; }
+.msg.user .msg-avatar { background: #2d333b; color: var(--text); }
+.typing-dots { display: flex; gap: 4px; padding: 4px 2px; }
+.typing-dots span {
+  width: 5px; height: 5px; border-radius: 50%; background: var(--muted);
+  animation: blink 1.2s ease-in-out infinite;
+}
+.typing-dots span:nth-child(2) { animation-delay: 0.2s; }
+.typing-dots span:nth-child(3) { animation-delay: 0.4s; }
+@keyframes blink { 0%,80%,100%{opacity:0.3;transform:scale(0.8)} 40%{opacity:1;transform:scale(1)} }
+.chat-quick {
+  padding: 8px 14px; display: flex; gap: 6px; flex-wrap: wrap;
+  border-top: 1px solid var(--border);
+}
+.quick-btn {
+  font-size: 11px; padding: 5px 10px; border-radius: 20px;
+  background: rgba(63,184,132,0.1); color: var(--green);
+  border: 1px solid rgba(63,184,132,0.25); cursor: pointer;
+  font-family: 'DM Sans', sans-serif; transition: background 0.2s;
+}
+.quick-btn:hover { background: rgba(63,184,132,0.2); }
+.chat-input-row {
+  padding: 10px 12px;
+  display: flex; gap: 8px; border-top: 1px solid var(--border);
+}
+.chat-input {
+  flex: 1; background: #0d1117; border: 1px solid var(--border);
+  border-radius: 20px; padding: 9px 14px;
+  color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 13px;
+  outline: none; transition: border-color 0.2s;
+}
+.chat-input:focus { border-color: var(--green); }
+.chat-send {
+  background: var(--green); color: #000; border: none;
+  border-radius: 50%; width: 36px; height: 36px;
+  cursor: pointer; font-size: 16px;
+  display: flex; align-items: center; justify-content: center;
+  transition: opacity 0.2s; flex-shrink: 0;
+}
+.chat-send:hover { opacity: 0.85; }
+.chat-send:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* ── RESPONSIVE ───────────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  nav { padding: 0 20px; }
+  .nav-links { display: none; }
+  .hero { padding: 90px 20px 56px; }
+  .hero-stats { gap: 20px; }
+  .section { padding: 64px 20px; }
+  .skills-grid, .contact-grid { grid-template-columns: 1fr; }
+  .skill-tags-grid { grid-template-columns: 1fr; }
+  footer { flex-direction: column; gap: 8px; padding: 16px; text-align: center; }
+  .chat-window { right: 12px; left: 12px; width: auto; bottom: 88px; }
+  .chat-toggle { right: 16px; bottom: 20px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ── NAV ──────────────────────────────────────────────────────────────────── -->
+<nav>
+  <span class="nav-name">NL</span>
+  <div class="nav-links">
+    <a href="#skills">Skills</a>
+    <a href="#work">Work</a>
+    <a href="#experience">Experience</a>
+    <a href="#contact">Contact</a>
+  </div>
+  <a href="mailto:niharikalabhsetwar@gmail.com" class="nav-hire">Hire me →</a>
+</nav>
+
+<!-- ── HERO ──────────────────────────────────────────────────────────────────── -->
+<section class="hero" id="home">
+  <div class="hero-inner">
+    <div class="hero-tag">ESG &amp; Sustainability Analyst · Seattle, WA · Open to Work</div>
+    <h1>Measuring what<br>matters for a<br><em>sustainable world.</em></h1>
+    <p class="hero-sub">GRI · BRSR · ISO 14001 · CDP · TCFD — real framework experience from KPMG consulting and industrial ESG programs, backed by Power BI and Tableau.</p>
+    <div class="hero-btns">
+      <a href="#work" class="btn-solid">See my work ↓</a>
+      <a href="#contact" class="btn-ghost">Let's connect</a>
+    </div>
+    <div class="hero-stats">
+      <div><div class="stat-num">6+</div><div class="stat-lbl">ESG frameworks<br>fluent</div></div>
+      <div><div class="stat-num">3+</div><div class="stat-lbl">Years sustainability<br>experience</div></div>
+      <div><div class="stat-num">32%</div><div class="stat-lbl">Reporting effort<br>reduced at KPMG</div></div>
+      <div><div class="stat-num">3.82</div><div class="stat-lbl">MS GPA,<br>Northeastern</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── TICKER ──────────────────────────────────────────────────────────────── -->
+<div class="ticker" aria-hidden="true">
+  <div class="ticker-track">
+    <span class="ticker-item">GRI Standards</span>
+    <span class="ticker-item">BRSR Framework</span>
+    <span class="ticker-item">ISO 14001</span>
+    <span class="ticker-item">Carbon Accounting</span>
+    <span class="ticker-item">Materiality Mapping</span>
+    <span class="ticker-item">Water Footprinting</span>
+    <span class="ticker-item">CDP Reporting</span>
+    <span class="ticker-item">TCFD Alignment</span>
+    <span class="ticker-item">SASB Standards</span>
+    <span class="ticker-item">Power BI</span>
+    <span class="ticker-item">Tableau</span>
+    <span class="ticker-item">ESG Compliance</span>
+    <span class="ticker-item">GRI Standards</span>
+    <span class="ticker-item">BRSR Framework</span>
+    <span class="ticker-item">ISO 14001</span>
+    <span class="ticker-item">Carbon Accounting</span>
+    <span class="ticker-item">Materiality Mapping</span>
+    <span class="ticker-item">Water Footprinting</span>
+    <span class="ticker-item">CDP Reporting</span>
+    <span class="ticker-item">TCFD Alignment</span>
+    <span class="ticker-item">SASB Standards</span>
+    <span class="ticker-item">Power BI</span>
+    <span class="ticker-item">Tableau</span>
+    <span class="ticker-item">ESG Compliance</span>
+  </div>
+</div>
+
+<div class="section-divider"></div>
+
+<!-- ── SKILLS ──────────────────────────────────────────────────────────────── -->
+<div class="section" id="skills">
+  <div class="section-eyebrow">Expertise</div>
+  <h2>Framework fluency<br>meets data depth.</h2>
+  <div class="skills-grid">
+    <!-- Left: radar chart + tag clouds -->
+    <div>
+      <div style="position:relative; height:280px; width:100%;">
+        <canvas id="radarChart"></canvas>
+      </div>
+      <div class="skill-tags-grid">
+        <div class="skill-group">
+          <div class="skill-group-title">ESG Frameworks</div>
+          <div class="tags">
+            <span class="tag">GRI</span><span class="tag">BRSR</span>
+            <span class="tag">ISO 14001</span><span class="tag">CDP</span>
+            <span class="tag">TCFD</span><span class="tag">SASB</span>
+          </div>
+        </div>
+        <div class="skill-group">
+          <div class="skill-group-title">Analytics &amp; BI</div>
+          <div class="tags">
+            <span class="tag">Power BI</span><span class="tag">Tableau</span>
+            <span class="tag">Excel</span><span class="tag">KPI Design</span>
+          </div>
+        </div>
+        <div class="skill-group">
+          <div class="skill-group-title">ESG Capabilities</div>
+          <div class="tags">
+            <span class="tag">Carbon Accounting</span>
+            <span class="tag">Water Footprinting</span>
+            <span class="tag">Materiality Mapping</span>
+          </div>
+        </div>
+        <div class="skill-group">
+          <div class="skill-group-title">Methods</div>
+          <div class="tags">
+            <span class="tag">Agile/Scrum</span><span class="tag">Jira</span>
+            <span class="tag">UAT</span><span class="tag">Stakeholder Mgmt</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Right: animated bars -->
+    <div id="skill-bars">
+      <div class="skill-bar"><div class="skill-bar-head"><span class="skill-bar-name">GRI Standards &amp; Reporting</span><span class="skill-bar-pct">95%</span></div><div class="skill-bar-track"><div class="skill-bar-fill" data-w="95"></div></div></div>
+      <div class="skill-bar"><div class="skill-bar-head"><span class="skill-bar-name">BRSR Framework</span><span class="skill-bar-pct">92%</span></div><div class="skill-bar-track"><div class="skill-bar-fill" data-w="92"></div></div></div>
+      <div class="skill-bar"><div class="skill-bar-head"><span class="skill-bar-name">ISO 14001</span><span class="skill-bar-pct">90%</span></div><div class="skill-bar-track"><div class="skill-bar-fill" data-w="90"></div></div></div>
+      <div class="skill-bar"><div class="skill-bar-head"><span class="skill-bar-name">Carbon Accounting</span><span class="skill-bar-pct">88%</span></div><div class="skill-bar-track"><div class="skill-bar-fill" data-w="88"></div></div></div>
+      <div class="skill-bar"><div class="skill-bar-head"><span class="skill-bar-name">Materiality Mapping</span><span class="skill-bar-pct">88%</span></div><div class="skill-bar-track"><div class="skill-bar-fill" data-w="88"></div></div></div>
+      <div class="skill-bar"><div class="skill-bar-head"><span class="skill-bar-name">Water Footprinting</span><span class="skill-bar-pct">85%</span></div><div class="skill-bar-track"><div class="skill-bar-fill" data-w="85"></div></div></div>
+      <div class="skill-bar"><div class="skill-bar-head"><span class="skill-bar-name">Stakeholder Reporting</span><span class="skill-bar-pct">90%</span></div><div class="skill-bar-track"><div class="skill-bar-fill" data-w="90"></div></div></div>
+      <div class="skill-bar"><div class="skill-bar-head"><span class="skill-bar-name">Power BI &amp; Tableau</span><span class="skill-bar-pct">80%</span></div><div class="skill-bar-track"><div class="skill-bar-fill" data-w="80"></div></div></div>
+      <div class="skill-bar"><div class="skill-bar-head"><span class="skill-bar-name">ESG Compliance Docs</span><span class="skill-bar-pct">88%</span></div><div class="skill-bar-track"><div class="skill-bar-fill" data-w="88"></div></div></div>
+      <div class="skill-bar"><div class="skill-bar-head"><span class="skill-bar-name">CDP / TCFD</span><span class="skill-bar-pct">75%</span></div><div class="skill-bar-track"><div class="skill-bar-fill" data-w="75"></div></div></div>
+    </div>
+  </div>
+</div>
+
+<div class="section-divider"></div>
+
+<!-- ── WORK ───────────────────────────────────────────────────────────────── -->
+<div class="section" id="work">
+  <div class="section-eyebrow">Portfolio</div>
+  <h2>Work that shows<br>the thinking.</h2>
+  <div class="work-grid">
+
+    <!-- REI ESG Analysis -->
+    <div class="work-card">
+      <div class="wc-top"><span class="wc-badge">ESG Gap Analysis · GRI Framework</span></div>
+      <div class="wc-title">REI Sustainability Disclosure — GRI Scorecard</div>
+      <div class="wc-meta">Independent analysis · Seattle, WA · May 2026 · GRI 2021 Standards</div>
+      <div class="wc-chart">
+        <div style="position:relative; height:200px;">
+          <canvas id="reiChart"></canvas>
+        </div>
+      </div>
+      <div class="wc-body">
+        <div class="finding"><strong>Carbon &amp; Energy (72/100)</strong> — Scope 1 &amp; 2 emissions reported. Scope 3 value chain absent — SEC climate disclosure pressure makes this material.</div>
+        <div class="finding"><strong>Water (38/100)</strong> — No water withdrawal data for owned operations. GRI 303 requires disclosure by source. Critical compliance gap for a retail company.</div>
+        <div class="finding"><strong>Supply Chain (55/100)</strong> — Supplier code published but no tier-2/3 audit data. SASB Multiline Retail standard increasingly expected by institutional investors.</div>
+        <div class="finding"><strong>Governance (80/100)</strong> — Strong board ESG oversight. Recommend adding ESG-linked executive compensation to meet emerging best practice.</div>
+        <div class="rag-row">
+          <span class="rag rag-g">✓ Carbon: Reported</span>
+          <span class="rag rag-r">✗ Water: Critical Gap</span>
+          <span class="rag rag-a">⚠ Supply Chain: Partial</span>
+          <span class="rag rag-a">⚠ Social: Partial</span>
+          <span class="rag rag-g">✓ Governance: Strong</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ESG Market + EcoAction side by side on wider screens -->
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px;">
+
+      <!-- ESG Market Growth -->
+      <div class="work-card">
+        <div class="wc-top"><span class="wc-badge">Market Data · 2021–2026</span></div>
+        <div class="wc-title" style="font-size:17px;">ESG Job Market Growth</div>
+        <div class="wc-meta">Green hiring outpaces skills supply 2× — LinkedIn 2025</div>
+        <div class="wc-chart">
+          <div style="position:relative; height:180px;">
+            <canvas id="mktChart"></canvas>
+          </div>
+        </div>
+        <div class="wc-body">
+          <div class="finding"><strong>+231%</strong> ESG vacancy growth in Jan 2025 vs Jan 2024</div>
+          <div class="finding"><strong>+16.3%</strong> YoY growth in financial services ESG hiring</div>
+        </div>
+      </div>
+
+      <!-- EcoAction -->
+      <div class="work-card">
+        <div class="wc-top"><span class="wc-badge">Data Platform</span></div>
+        <div class="wc-title" style="font-size:17px;">EcoAction AI Planner</div>
+        <div class="wc-meta">GRI 302/303/305 aligned · 2024</div>
+        <div class="wc-chart">
+          <div style="position:relative; height:180px;">
+            <canvas id="ecoChart"></canvas>
+          </div>
+        </div>
+        <div class="wc-body">
+          <div class="finding"><strong>~60% reduction</strong> in manual data entry via AI pipelines</div>
+          <div class="finding">Structured datasets aligned with GRI environmental standards</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section-divider"></div>
+
+<!-- ── EXPERIENCE ─────────────────────────────────────────────────────────── -->
+<div class="section" id="experience">
+  <div class="section-eyebrow">Experience &amp; Education</div>
+  <h2>The path that built<br>the expertise.</h2>
+  <div class="timeline">
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-date">AUG 2025 – OCT 2025</div>
+      <div class="tl-role">Product Analyst Intern</div>
+      <div class="tl-company">TenantKey (by HotelKey) · Remote, USA</div>
+      <div class="tl-bullets">
+        <div class="tl-bullet">Power BI &amp; Tableau dashboards tracking payment KPIs &amp; engagement</div>
+        <div class="tl-bullet">Led UAT — reduced post-deployment support tickets by 25%</div>
+        <div class="tl-bullet">Funnel analysis improved tenant completion rates by 18%</div>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-date">MAY 2024 – AUG 2024</div>
+      <div class="tl-role">Product Intern</div>
+      <div class="tl-company">Drip Capital · Remote, USA</div>
+      <div class="tl-bullets">
+        <div class="tl-bullet">SMB financial workflow analysis — increased product engagement by 22%</div>
+        <div class="tl-bullet">Translated stakeholder requirements into agile user stories</div>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-date">MAY 2022 – NOV 2022</div>
+      <div class="tl-role">ESG Program Consultant</div>
+      <div class="tl-company">Life Giver Professional Services · Remote</div>
+      <div class="tl-bullets">
+        <div class="tl-bullet">BRSR, GRI &amp; ISO 14001 compliance programs for industrial clients, end-to-end</div>
+        <div class="tl-bullet">Materiality mapping, water footprinting, carbon stock analysis &amp; environmental impact assessments</div>
+        <div class="tl-bullet">Stakeholder-facing ESG disclosure reports meeting regulatory requirements</div>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-date">DEC 2021 – MAR 2022</div>
+      <div class="tl-role">Associate Consultant — ESG &amp; Business Analysis</div>
+      <div class="tl-company">KPMG · Mumbai, India</div>
+      <div class="tl-bullets">
+        <div class="tl-bullet">Automation workflows for ESG compliance reporting — reduced manual effort by 32%</div>
+        <div class="tl-bullet">Power BI dashboards for carbon reduction monitoring &amp; audit-readiness</div>
+        <div class="tl-bullet">Stakeholder analysis &amp; ESG process mapping saving 10+ hours weekly</div>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot amber"></div>
+      <div class="tl-date amber">EDUCATION</div>
+      <div class="tl-role">M.S. Information Systems (STEM) — GPA 3.82</div>
+      <div class="tl-company">Northeastern University · Seattle, WA · May 2025</div>
+      <div class="tl-bullets">
+        <div class="tl-bullet">Data Analytics, Business Process Analysis, Data Visualization, Information Systems Management</div>
+      </div>
+      <div class="edu-extra">
+        <div class="tl-role">M.Tech Water Resources Management</div>
+        <div class="tl-company">TERI School of Advanced Studies (TERI SAS) · Delhi, India</div>
+        <div class="tl-bullets" style="margin-top:6px;">
+          <div class="tl-bullet">Water systems, environmental sustainability &amp; resource management — direct foundation for water footprinting and ESG environmental assessments</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section-divider"></div>
+
+<!-- ── CONTACT ────────────────────────────────────────────────────────────── -->
+<div class="section" id="contact">
+  <div class="contact-grid">
+    <div>
+      <div class="section-eyebrow">Contact</div>
+      <div class="contact-big">Let's build something <em>sustainable.</em></div>
+      <p class="contact-sub">Open to ESG analyst, sustainability reporting, and corporate sustainability roles — Seattle or remote. Always happy to discuss GRI frameworks, carbon reporting, or data-driven sustainability.</p>
+      <div class="contact-links">
+        <a href="https://www.linkedin.com/in/niharikalabhsetwar" target="_blank" rel="noopener noreferrer" class="contact-link">
+          <div class="contact-link-icon">in</div>
+          <div>
+            <span class="contact-link-label">LinkedIn</span>
+            <span class="contact-link-value">linkedin.com/in/niharikalabhsetwar</span>
+          </div>
+          <span class="contact-link-arrow">→</span>
+        </a>
+        <a href="mailto:niharikalabhsetwar@gmail.com" class="contact-link">
+          <div class="contact-link-icon" style="font-size:16px;">✉</div>
+          <div>
+            <span class="contact-link-label">Email</span>
+            <span class="contact-link-value">niharikalabhsetwar@gmail.com</span>
+          </div>
+          <span class="contact-link-arrow">→</span>
+        </a>
+        <a href="tel:+12064746743" class="contact-link">
+          <div class="contact-link-icon" style="font-size:15px;">☎</div>
+          <div>
+            <span class="contact-link-label">Phone</span>
+            <span class="contact-link-value">+1 (206) 474-6743</span>
+          </div>
+          <span class="contact-link-arrow">→</span>
+        </a>
+      </div>
+    </div>
+    <div class="contact-form">
+      <div style="font-size:14px; font-weight:600; margin-bottom:18px;">Send a message</div>
+      <label class="form-label" for="cf-name">Your name</label>
+      <input class="form-input" id="cf-name" type="text" placeholder="Jane Smith">
+      <label class="form-label" for="cf-email">Email address</label>
+      <input class="form-input" id="cf-email" type="email" placeholder="jane@company.com">
+      <label class="form-label" for="cf-msg">Message</label>
+      <textarea class="form-textarea" id="cf-msg" placeholder="Tell me about the role or opportunity..."></textarea>
+      <button class="form-submit" onclick="sendContactForm()">Send message →</button>
+      <div class="form-success" id="form-success">✓ Your email client is opening with the message pre-filled.</div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <span>© 2026 Niharika Labhsetwar · ESG &amp; Sustainability Analyst · Seattle, WA</span>
+  <span style="font-family:'DM Mono',monospace; font-size:11px; letter-spacing:0.05em;">GRI · BRSR · ISO 14001 · CDP · TCFD</span>
+</footer>
+
+<!-- ── CHATBOT ─────────────────────────────────────────────────────────────── -->
+<button class="chat-toggle" id="chatToggle" onclick="toggleChat()" aria-label="Open chat">💬</button>
+
+<div class="chat-window" id="chatWindow">
+  <div class="chat-header">
+    <div class="chat-avatar">N</div>
+    <div>
+      <div class="chat-header-name">Niharika's Assistant</div>
+      <div class="chat-header-sub">Ask me anything about her work</div>
+    </div>
+    <button class="chat-close" onclick="toggleChat()">✕</button>
+  </div>
+
+  <div class="chat-messages" id="chatMessages">
+    <div class="msg bot">
+      <div class="msg-avatar">N</div>
+      <div class="msg-bubble">Hi! I'm Niharika's portfolio assistant. Ask me about her ESG experience, skills, frameworks, or anything else you'd like to know. 👋</div>
+    </div>
+  </div>
+
+  <div class="chat-quick" id="quickBtns">
+    <button class="quick-btn" onclick="quickAsk('What ESG frameworks does Niharika know?')">ESG frameworks</button>
+    <button class="quick-btn" onclick="quickAsk('What is her KPMG experience?')">KPMG work</button>
+    <button class="quick-btn" onclick="quickAsk('Is she open to work?')">Availability</button>
+    <button class="quick-btn" onclick="quickAsk('What is her educational background?')">Education</button>
+  </div>
+
+  <div class="chat-input-row">
+    <input class="chat-input" id="chatInput" type="text" placeholder="Ask anything..." onkeydown="if(event.key==='Enter')sendChat()">
+    <button class="chat-send" id="chatSend" onclick="sendChat()">↑</button>
+  </div>
+</div>
+
+<!-- ── JAVASCRIPT ──────────────────────────────────────────────────────────── -->
+<script>
+/* ── CHARTS ─────────────────────────────────────────────────────────────── */
+// Radar — skills
+new Chart(document.getElementById('radarChart'), {
+  type: 'radar',
+  data: {
+    labels: ['GRI / BRSR', 'Carbon\nAccounting', 'Stakeholder\nReporting', 'BI / Data', 'Materiality\nMapping', 'Water &\nEnvironmental'],
+    datasets: [{
+      data: [95, 88, 90, 80, 88, 85],
+      borderColor: '#3fb884',
+      backgroundColor: 'rgba(63,184,132,0.12)',
+      borderWidth: 2,
+      pointBackgroundColor: '#3fb884',
+      pointBorderColor: '#0d1117',
+      pointRadius: 5,
+      pointHoverRadius: 7
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      r: {
+        min: 0, max: 100,
+        ticks: { display: false },
+        grid: { color: 'rgba(255,255,255,0.07)' },
+        angleLines: { color: 'rgba(255,255,255,0.07)' },
+        pointLabels: { color: '#7d8590', font: { size: 11, family: "'DM Sans', sans-serif" } }
+      }
+    }
+  }
+});
+
+// Bar — REI scorecard
+new Chart(document.getElementById('reiChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Carbon & Energy', 'Water', 'Supply Chain', 'Social', 'Governance'],
+    datasets: [{
+      label: 'GRI Score /100',
+      data: [72, 38, 55, 61, 80],
+      backgroundColor: ['rgba(63,184,132,0.75)', 'rgba(224,90,90,0.75)', 'rgba(240,165,0,0.75)', 'rgba(240,165,0,0.75)', 'rgba(63,184,132,0.75)'],
+      borderColor: ['#3fb884','#e05a5a','#f0a500','#f0a500','#3fb884'],
+      borderWidth: 1.5,
+      borderRadius: 6,
+      borderSkipped: false
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: { callbacks: { label: c => ` Score: ${c.raw}/100` } }
+    },
+    scales: {
+      y: { min: 0, max: 100, grid: { color: 'rgba(255,255,255,0.06)' }, ticks: { color: '#7d8590', font: { size: 11 } } },
+      x: { grid: { display: false }, ticks: { color: '#7d8590', font: { size: 11 } } }
+    }
+  }
+});
+
+// Line — ESG market growth
+new Chart(document.getElementById('mktChart'), {
+  type: 'line',
+  data: {
+    labels: ['2021','2022','2023','2024','2025','2026'],
+    datasets: [{
+      data: [100, 130, 178, 240, 431, 520],
+      borderColor: '#3fb884',
+      backgroundColor: 'rgba(63,184,132,0.08)',
+      borderWidth: 2.5,
+      pointBackgroundColor: '#3fb884',
+      pointBorderColor: '#161b22',
+      pointRadius: 4,
+      fill: true, tension: 0.4
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => ` Index: ${c.raw}` } } },
+    scales: {
+      y: { grid: { color: 'rgba(255,255,255,0.06)' }, ticks: { color: '#7d8590', font: { size: 10 } } },
+      x: { grid: { display: false }, ticks: { color: '#7d8590', font: { size: 10 } } }
+    }
+  }
+});
+
+// Doughnut — EcoAction
+new Chart(document.getElementById('ecoChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Carbon','Water','Energy','Biodiversity','Social'],
+    datasets: [{
+      data: [35, 25, 20, 12, 8],
+      backgroundColor: ['#3fb884','#f0a500','#5b8dee','#a78bfa','#e05a5a'],
+      borderColor: '#161b22',
+      borderWidth: 3,
+      hoverOffset: 8
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    cutout: '65%',
+    plugins: {
+      legend: { display: true, position: 'bottom', labels: { color: '#7d8590', font: { size: 10 }, padding: 8, boxWidth: 10 } },
+      tooltip: { callbacks: { label: c => ` ${c.label}: ${c.raw}%` } }
+    }
+  }
+});
+
+/* ── SKILL BARS on scroll ────────────────────────────────────────────────── */
+let barsAnimated = false;
+const skillsEl = document.getElementById('skills');
+const io = new IntersectionObserver(entries => {
+  if (entries[0].isIntersecting && !barsAnimated) {
+    barsAnimated = true;
+    document.querySelectorAll('.skill-bar-fill').forEach((bar, i) => {
+      setTimeout(() => { bar.style.width = bar.dataset.w + '%'; }, i * 90);
+    });
+  }
+}, { threshold: 0.2 });
+io.observe(skillsEl);
+
+/* ── CONTACT FORM ────────────────────────────────────────────────────────── */
+function sendContactForm() {
+  const name  = document.getElementById('cf-name').value.trim();
+  const email = document.getElementById('cf-email').value.trim();
+  const msg   = document.getElementById('cf-msg').value.trim();
+  if (!name || !email || !msg) { alert('Please fill in all fields.'); return; }
+  const sub = encodeURIComponent('Portfolio enquiry from ' + name);
+  const bod = encodeURIComponent('Name: ' + name + '\nEmail: ' + email + '\n\nMessage:\n' + msg);
+  window.location.href = 'mailto:niharikalabhsetwar@gmail.com?subject=' + sub + '&body=' + bod;
+  document.getElementById('form-success').style.display = 'block';
+}
+
+/* ── CHATBOT ─────────────────────────────────────────────────────────────── */
+const KNOWLEDGE = {
+  "ESG frameworks": "Niharika is proficient in GRI Standards, BRSR, ISO 14001, CDP, TCFD, and SASB. She has hands-on experience delivering compliance programs using GRI and BRSR through her KPMG and Life Giver Professional Services roles.",
+  "KPMG": "At KPMG Mumbai (Dec 2021 – Mar 2022), Niharika built automation workflows for ESG compliance reporting — reducing manual effort by 32%. She also designed Power BI dashboards for carbon reduction monitoring and audit-readiness tracking.",
+  "Life Giver": "At Life Giver Professional Services, Niharika delivered end-to-end ESG programs for industrial clients aligned with BRSR, GRI, and ISO 14001. She conducted materiality mapping, water footprinting, carbon stock analysis, and produced stakeholder-facing compliance reports.",
+  "education": "Niharika holds an M.S. in Information Systems (STEM) from Northeastern University Seattle (GPA 3.82, May 2025) and an M.Tech in Water Resources Management from TERI School of Advanced Studies, Delhi — giving her a strong technical foundation for ESG environmental work.",
+  "availability": "Niharika is actively open to work and seeking ESG Analyst, Sustainability Reporting Analyst, or Corporate Sustainability Consultant roles in Seattle or remote. You can reach her at niharikalabhsetwar@gmail.com.",
+  "skills": "Her core skills include: GRI (95%), BRSR (92%), ISO 14001 (90%), Carbon Accounting (88%), Materiality Mapping (88%), Water Footprinting (85%), Stakeholder Reporting (90%), and Power BI/Tableau (80%).",
+  "carbon": "Niharika has direct experience with carbon stock analysis, Scope 1/2/3 emissions frameworks, and carbon reduction monitoring dashboards built in Power BI. This was core to her KPMG and Life Giver ESG program work.",
+  "water": "Water footprinting is one of Niharika's specialist capabilities — she conducted technical water footprinting assessments for industrial clients at Life Giver, aligned with GRI 303 standards. Her M.Tech in Water Resources Management from TERI SAS gives her deep technical grounding.",
+  "TenantKey": "At TenantKey (Aug–Oct 2025), Niharika built executive Power BI and Tableau dashboards, led UAT reducing post-deployment tickets by 25%, and analyzed onboarding funnels improving completion rates by 18%.",
+  "Drip Capital": "At Drip Capital (May–Aug 2024), Niharika analyzed SMB financial workflows to identify friction points, collaborated with Finance and Sales to increase product engagement by 22%, and translated requirements into agile user stories.",
+  "contact": "You can reach Niharika at: Email — niharikalabhsetwar@gmail.com | LinkedIn — linkedin.com/in/niharikalabhsetwar | Phone — +1 (206) 474-6743",
+  "salary": "Based on current Seattle market data, ESG Analyst roles typically pay $75K–$120K base, with consultancies like Deloitte and Guidehouse offering $70–95K at analyst level.",
+  "location": "Niharika is based in Seattle, WA and is open to both in-office Seattle roles and fully remote positions across the US."
+};
+
+function getBotResponse(userMsg) {
+  const msg = userMsg.toLowerCase();
+  if (msg.includes('gri') || msg.includes('brsr') || msg.includes('iso') || msg.includes('tcfd') || msg.includes('framework') || msg.includes('cdp') || msg.includes('sasb')) return KNOWLEDGE["ESG frameworks"];
+  if (msg.includes('kpmg')) return KNOWLEDGE["KPMG"];
+  if (msg.includes('life giver') || msg.includes('consultant')) return KNOWLEDGE["Life Giver"];
+  if (msg.includes('educat') || msg.includes('degree') || msg.includes('university') || msg.includes('teri') || msg.includes('northeastern') || msg.includes('mtech') || msg.includes('msc') || msg.includes('ms ')) return KNOWLEDGE["education"];
+  if (msg.includes('open') || msg.includes('availab') || msg.includes('hire') || msg.includes('looking') || msg.includes('job') || msg.includes('role') || msg.includes('work')) return KNOWLEDGE["availability"];
+  if (msg.includes('skill') || msg.includes('proficien') || msg.includes('good at') || msg.includes('expertise')) return KNOWLEDGE["skills"];
+  if (msg.includes('carbon') || msg.includes('emission') || msg.includes('scope')) return KNOWLEDGE["carbon"];
+  if (msg.includes('water') || msg.includes('footprint')) return KNOWLEDGE["water"];
+  if (msg.includes('tenantkey') || msg.includes('hotelkey')) return KNOWLEDGE["TenantKey"];
+  if (msg.includes('drip') || msg.includes('fintech') || msg.includes('smb')) return KNOWLEDGE["Drip Capital"];
+  if (msg.includes('contact') || msg.includes('email') || msg.includes('phone') || msg.includes('linkedin') || msg.includes('reach')) return KNOWLEDGE["contact"];
+  if (msg.includes('salary') || msg.includes('pay') || msg.includes('compensation')) return KNOWLEDGE["salary"];
+  if (msg.includes('seattle') || msg.includes('location') || msg.includes('where') || msg.includes('remote')) return KNOWLEDGE["location"];
+  if (msg.includes('hello') || msg.includes('hi') || msg.includes('hey')) return "Hello! Great to meet you. I can tell you about Niharika's ESG expertise, KPMG and consulting experience, education, skills, or how to get in touch. What would you like to know?";
+  if (msg.includes('thank')) return "You're welcome! Feel free to ask if you have more questions about Niharika's work.";
+  return "Great question! I can tell you about Niharika's ESG frameworks, KPMG experience, education (M.Tech TERI SAS + MS Northeastern), water footprinting, carbon accounting, or contact details. What specifically would you like to know?";
+}
+
+function toggleChat() {
+  const win = document.getElementById('chatWindow');
+  const btn = document.getElementById('chatToggle');
+  const isOpen = win.classList.toggle('open');
+  btn.textContent = isOpen ? '✕' : '💬';
+  if (isOpen) document.getElementById('chatInput').focus();
+}
+
+function addMessage(text, role) {
+  const msgs = document.getElementById('chatMessages');
+  const div = document.createElement('div');
+  div.className = 'msg ' + role;
+  div.innerHTML = `<div class="msg-avatar">${role === 'bot' ? 'N' : 'You'}</div><div class="msg-bubble">${text}</div>`;
+  msgs.appendChild(div);
+  msgs.scrollTop = msgs.scrollHeight;
+  return div;
+}
+
+function addTyping() {
+  const msgs = document.getElementById('chatMessages');
+  const div = document.createElement('div');
+  div.className = 'msg bot';
+  div.id = 'typing-indicator';
+  div.innerHTML = `<div class="msg-avatar">N</div><div class="msg-bubble"><div class="typing-dots"><span></span><span></span><span></span></div></div>`;
+  msgs.appendChild(div);
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+function removeTyping() {
+  const el = document.getElementById('typing-indicator');
+  if (el) el.remove();
+}
+
+function quickAsk(q) {
+  document.getElementById('quickBtns').style.display = 'none';
+  document.getElementById('chatInput').value = q;
+  sendChat();
+}
+
+function sendChat() {
+  const input = document.getElementById('chatInput');
+  const text = input.value.trim();
+  if (!text) return;
+
+  const btn = document.getElementById('chatSend');
+  input.value = '';
+  btn.disabled = true;
+
+  addMessage(text, 'user');
+  addTyping();
+
+  // Simulate a short thinking delay, then respond
+  setTimeout(() => {
+    removeTyping();
+    const response = getBotResponse(text);
+    addMessage(response, 'bot');
+    btn.disabled = false;
+    input.focus();
+  }, 700 + Math.random() * 400);
+}
+</script>
+</body>
+</html>
