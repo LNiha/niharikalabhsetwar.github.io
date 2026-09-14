@@ -332,11 +332,13 @@ footer{padding:1.25rem 3.5rem;border-top:1px solid var(--line);display:flex;alig
     </p>
     <div class="hero-actions">
   <a href="#work" class="btn">View my work</a>
+ <div class="hero-actions">
+  <a href="#work" class="btn">View my work</a>
   <div style="position:relative;display:inline-block" id="res-wrap">
     <button onclick="document.getElementById('res-dd').classList.toggle('res-open')"
-      style="display:flex;align-items:center;gap:0.6rem;font-size:0.7rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--text2);background:transparent;border:none;cursor:pointer;padding:0;font-family:'DM Serif Display',serif;font-weight:600;">
-      Download Resume
-      <span style="font-size:0.6rem">▾</span>
+      style="display:flex;align-items:center;gap:0.6rem;font-family:'DM Serif Display',serif;font-size:0.7rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;padding:0.7rem 1.5rem;background:var(--w);color:var(--bg);border:none;border-radius:2px;cursor:pointer;transition:all 0.2s;"
+      onmouseover="this.style.background='var(--c1)';this.style.color='#fff'" onmouseout="this.style.background='var(--w)';this.style.color='var(--bg)'">
+      Download Resume ▾
     </button>
     <div id="res-dd" style="display:none;position:absolute;left:0;top:calc(100% + 8px);min-width:220px;background:var(--bg);border:1px solid var(--line);border-radius:2px;z-index:200;box-shadow:0 4px 20px rgba(45,42,37,0.08);">
       <a href="Niharika_Labhsetwar_Resume.pdf" download
@@ -357,6 +359,11 @@ footer{padding:1.25rem 3.5rem;border-top:1px solid var(--line);display:flex;alig
 </div>
 <style>#res-dd.res-open{display:block!important}</style>
 <script>
+  document.addEventListener('click',function(e){
+    var w=document.getElementById('res-wrap');
+    if(w&&!w.contains(e.target))document.getElementById('res-dd').classList.remove('res-open');
+  });
+</script>
   document.addEventListener('click',function(e){
     var w=document.getElementById('res-wrap');
     if(w&&!w.contains(e.target))document.getElementById('res-dd').classList.remove('res-open');
